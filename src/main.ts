@@ -1,4 +1,4 @@
-import { BaseGovService } from './services/baseGovService';
+import { BaseGovService, Contract } from './services/baseGovService';
 import { ContractFilter, UserProfile } from './services/contractFilter';
 import * as fs from 'fs';
 
@@ -24,7 +24,7 @@ async function runWeeklyJob() {
     // but the API query in BaseGovService handles "sort: -drPublicationDate".
     // We will fetch enough pages to cover the last X days.
 
-    let allContracts: any[] = [];
+    let allContracts: Contract[] = [];
     let page = 0;
     let keepFetching = true;
 

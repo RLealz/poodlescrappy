@@ -32,8 +32,12 @@ async function inspectFrontend() {
         console.log("\nFound Scripts:");
         scripts.forEach(s => console.log(`- ${s}`));
 
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error(`Error: ${error.message}`);
+        } else {
+            console.error(`Unknown Error: ${String(error)}`);
+        }
     }
 }
 

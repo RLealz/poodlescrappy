@@ -145,7 +145,6 @@ Verify the build integrity:
 ```bash
 npm run build
 ```
-*Note: A full test suite is planned for v1.1.0.*
 
 ---
 

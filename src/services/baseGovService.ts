@@ -50,8 +50,12 @@ export class BaseGovService {
             const response = await this.client.post(this.baseUrl, payload.toString());
             return response.data;
 
-        } catch (error: any) {
-            console.error('API Error:', error.response?.status, error.response?.statusText);
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                console.error('API Error:', error.response?.status, error.response?.statusText);
+            } else {
+                console.error('Unexpected Error:', error);
+            }
             throw error;
         }
     }

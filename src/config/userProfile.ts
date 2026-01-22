@@ -11,7 +11,7 @@ export const MY_PROFILE: UserProfile = {
 
 export const CONFIG = {
     DAYS_TO_FETCH: 14,
-    // Random delay range in milliseconds
+    // Pseudo random atraso 
     DELAY: {
         MIN: 2000,
         MAX: 5000
