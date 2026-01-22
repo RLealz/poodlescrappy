@@ -13,6 +13,10 @@ const MY_PROFILE: UserProfile = {
 };
 
 const DAYS_TO_FETCH = 14;
+
+// Random delay between 2 and 5 seconds to mimic human behavior
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const randomDelay = () => Math.floor(Math.random() * 3000) + 2000;
 // ---------------------
 
 async function runWeeklyJob() {
@@ -46,6 +50,13 @@ async function runWeeklyJob() {
 
         if (lastDate < cutoffDate) {
             keepFetching = false;
+        }
+
+        // Apply rate limiting before next page
+        if (keepFetching) {
+            const waitTime = randomDelay();
+            console.log(`Waiting ${waitTime}ms...`);
+            await delay(waitTime);
         }
 
         page++;
