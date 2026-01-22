@@ -4,12 +4,12 @@ import * as fs from 'fs';
 
 import { MY_PROFILE, CONFIG } from './config/userProfile';
 
-// --- CONFIGURATION ---
-// Profile imported from ../config/userProfile.ts
+// --- CONFIGURAÇÃO ---
+// Perfil importado de ../config/userProfile.ts
 
 
 
-// Random delay logic using CONFIG
+// Lógica de atraso aleatório usando CONFIG
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const randomDelay = () => Math.floor(Math.random() * (CONFIG.DELAY.MAX - CONFIG.DELAY.MIN)) + CONFIG.DELAY.MIN;
 // ---------------------
@@ -19,23 +19,23 @@ async function runWeeklyJob() {
     const service = new BaseGovService();
     const filter = new ContractFilter(MY_PROFILE);
 
-    // Calculate date range (Optional improvement: filter by date in code if API doesn't support strict ranges well)
-    // For now, we search for a broad term or empty string to get recent stuff, 
-    // but the API query in BaseGovService handles "sort: -drPublicationDate".
-    // We will fetch enough pages to cover the last X days.
+    // Calcular intervalo de datas (Melhoria opcional: filtrar por data no código se a API não ajudar)
+    // Por agora, procuramos termos gerais para apanhar cenas recentes,
+    // mas a query da API no BaseGovService trata do "sort: -drPublicationDate".
+    // Vamos sacar páginas suficientes para cobrir os últimos X dias.
 
     let allContracts: Contract[] = [];
     let page = 0;
     let keepFetching = true;
 
-    // Safety limit: 20 pages ~ 500 contracts
+    // Limite de segurança: 20 páginas ~ 500 contratos
     while (keepFetching && page < 20) {
         const results = await service.searchContracts("informática", page, 25);
         if (results.items.length === 0) break;
 
         allContracts = allContracts.concat(results.items);
 
-        // Check date of last item
+        // Verificar data do último item
         const lastItemDateStr = results.items[results.items.length - 1].drPublicationDate; // "DD-MM-YYYY"
         const [day, month, year] = lastItemDateStr.split('-').map(Number);
         const lastDate = new Date(year, month - 1, day);
@@ -47,7 +47,7 @@ async function runWeeklyJob() {
             keepFetching = false;
         }
 
-        // Apply rate limiting before next page
+        // Aplicar rate limiting antes da próxima página
         if (keepFetching) {
             const waitTime = randomDelay();
             console.log(`Waiting ${waitTime}ms...`);
@@ -59,7 +59,7 @@ async function runWeeklyJob() {
 
     console.log(`Fetched ${allContracts.length} raw contracts.`);
 
-    // Apply Filter & Classification
+    // Aplicar Filtro e Classificação
     const relevantContracts = filter.filterAndClassify(allContracts);
 
     console.log(`\n----------------------------------------`);
@@ -74,7 +74,7 @@ async function runWeeklyJob() {
         console.log('');
     });
 
-    // Save to file
+    // Guardar no ficheiro
     const reportData = JSON.stringify(relevantContracts, null, 2);
     fs.writeFileSync('weekly_report.json', reportData);
     console.log("Report saved to 'weekly_report.json'");

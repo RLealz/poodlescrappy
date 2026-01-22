@@ -15,7 +15,7 @@ async function inspectFrontend() {
         console.log(`Status: ${response.status}`);
         const html = response.data;
 
-        // Save HTML for later reference if needed
+        // Guardar HTML para referência futura se for preciso
         fs.writeFileSync('base_search.html', html);
         console.log("Saved HTML to base_search.html");
 
