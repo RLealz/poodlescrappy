@@ -34,8 +34,8 @@ export class BaseGovService {
 
     async searchContracts(query = "", page = 0, size = 25): Promise<SearchResult> {
         try {
-            // "type: search_anuncios" seems to be for searching announcements
-            // "type: search_contratos" would likely be for contracts
+            // "type: search_anuncios" == anuncios de contratos
+            // "type: search_contratos" == contratos
             const payload = new URLSearchParams({
                 type: 'search_anuncios',
                 version: '131.0',

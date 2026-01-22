@@ -23,12 +23,12 @@ export class ContractFilter {
         return contracts
             .filter(c => this.passesHardFilters(c))
             .map(c => this.classify(c))
-            .filter(c => c.relevanceScore > 0) // Only keep relevant ones
+            .filter(c => c.relevanceScore > 0) // Isto pode ser chato - mantém apenas os que têm pelo menos um ponto
             .sort((a, b) => b.relevanceScore - a.relevanceScore);
     }
 
     private passesHardFilters(contract: Contract): boolean {
-        // Parse price "75.000,00 €" -> 75000.00
+        // Separar o preço "75.000,00 €" -> 75000.00
         const priceStr = contract.basePrice.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, '');
         const price = parseFloat(priceStr);
 
@@ -51,11 +51,11 @@ export class ContractFilter {
         for (const keyword of this.profile.keywords) {
             if (text.includes(keyword.toLowerCase())) {
                 matches.push(keyword);
-                score += 10; // Base points for keyword match
+                score += 10; // Pontos base para correspondência de keywords
             }
         }
 
-        // Boost score for higher value contracts (optional logic)
+        // Mais guita vale mais pontos (log opcional)
         // const price = parseFloat(contract.basePrice.replace(/\./g, '').replace(',', '.').replace(/[^0-9.]/g, ''));
         // if (price > 50000) score += 5;
 

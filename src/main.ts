@@ -1,22 +1,17 @@
-import { BaseGovService } from '../services/baseGovService';
-import { ContractFilter, UserProfile } from '../services/contractFilter';
+import { BaseGovService } from './services/baseGovService';
+import { ContractFilter, UserProfile } from './services/contractFilter';
 import * as fs from 'fs';
 
+import { MY_PROFILE, CONFIG } from './config/userProfile';
+
 // --- CONFIGURATION ---
-const MY_PROFILE: UserProfile = {
-    keywords: [
-        'informática', 'software', 'desenvolvimento', 'web', 'plataforma',
-        'app', 'digital', 'inteligência artificial', 'dados'
-    ],
-    minPrice: 5000,
-    excludedTerms: ['limpeza', 'construção civil', 'manutenção predial']
-};
+// Profile imported from ../config/userProfile.ts
 
-const DAYS_TO_FETCH = 14;
 
-// Random delay between 2 and 5 seconds to mimic human behavior
+
+// Random delay logic using CONFIG
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-const randomDelay = () => Math.floor(Math.random() * 3000) + 2000;
+const randomDelay = () => Math.floor(Math.random() * (CONFIG.DELAY.MAX - CONFIG.DELAY.MIN)) + CONFIG.DELAY.MIN;
 // ---------------------
 
 async function runWeeklyJob() {
@@ -46,7 +41,7 @@ async function runWeeklyJob() {
         const lastDate = new Date(year, month - 1, day);
 
         const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - DAYS_TO_FETCH);
+        cutoffDate.setDate(cutoffDate.getDate() - CONFIG.DAYS_TO_FETCH);
 
         if (lastDate < cutoffDate) {
             keepFetching = false;
