@@ -17,7 +17,7 @@ class BaseGovService:
     """Cliente HTTP para a API do base.gov.pt com retry automático"""
 
     def __init__(self):
-        self.base_url = 'https://www.base.gov.pt/Base4/rest/search'
+        self.base_url = 'https://www.base.gov.pt/Base4/pt/resultados/'
         self.session = self._create_session()
 
     def _create_session(self) -> requests.Session:
@@ -61,10 +61,14 @@ class BaseGovService:
         Returns:
             Dicionário com items, total, etc.
         """
+        # Formato exato que a API espera (igual ao TypeScript)
+        from urllib.parse import quote
+        query_string = f"texto={quote(query)}&tipoacto=0&tipomodelo=0&tipocontrato=0"
+
         payload = {
             'type': 'search_anuncios',  # anuncios de contratos
             'version': '131.0',
-            'text': query,
+            'query': query_string,  # NÃO 'text', mas 'query'!
             'sort': '-drPublicationDate',  # Mais recentes primeiro
             'page': str(page),
             'size': str(size)
