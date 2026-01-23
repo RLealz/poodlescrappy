@@ -1,0 +1,17 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Output
+weekly_report.json
+*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

@@ -1,0 +1,5 @@
+# PoodleScrappy - Python Implementation
+# Dependências mínimas para scraping com retry e logging built-in
+
+requests==2.31.0
+urllib3==2.1.0
